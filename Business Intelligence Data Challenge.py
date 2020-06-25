@@ -83,13 +83,13 @@
 # Importing all important packages.
 
 
-# In[2]:
+# In[1]:
 
 
 import warnings                                  # `do not disturbe` mode
 warnings.filterwarnings('ignore')
 
-import datetime as dt
+import datetime as dt                            # for creating datetime variable
 import pandas as pd                              # tables and data manipulations
 import matplotlib.pyplot as plt                  # plots
 import seaborn as sns                            # more plots
@@ -111,7 +111,7 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 
 
 
-# In[145]:
+# In[2]:
 
 
 # importing teh Conversions dataset.
@@ -137,7 +137,7 @@ df_attributions = pd.read_csv('dataset/table_B_attribution.csv')
 
 # ### i) Insights
 
-# In[146]:
+# In[3]:
 
 
 # checking the shape of conversion dataset. 
@@ -147,7 +147,7 @@ print('Shape of First: ', df_conversions.shape)
 print('Shape of Second: ', df_attributions.shape)
 
 
-# In[147]:
+# In[4]:
 
 
 # checking the top 5 rows of converstion dataframe .
@@ -155,7 +155,7 @@ print('Shape of Second: ', df_attributions.shape)
 df_conversions.head(5)
 
 
-# In[148]:
+# In[5]:
 
 
 # checking the top 5 rows of attribution dataframe.
@@ -177,7 +177,7 @@ From the above, we can see that we have CONV_ID, which is same in the both dataf
 
 # ### ii) let's look for the completeness of the both datasets.
 
-# In[149]:
+# In[6]:
 
 
 # lets check the info for the converstions dataframe.
@@ -185,7 +185,7 @@ From the above, we can see that we have CONV_ID, which is same in the both dataf
 df_conversions.info()
 
 
-# In[150]:
+# In[7]:
 
 
 # check the columns of the conversions dataset, if they have any null values.
@@ -199,7 +199,7 @@ print(df_conversions.isnull().sum().sort_values(ascending=False))
 
 
 
-# In[21]:
+# In[8]:
 
 
 # lets check the info for the second daaframe.
@@ -207,7 +207,7 @@ print(df_conversions.isnull().sum().sort_values(ascending=False))
 df_attributions.info()
 
 
-# In[151]:
+# In[9]:
 
 
 # check the columns of the attributions dataset, if they have any null values.
@@ -231,36 +231,36 @@ print(df_attributions.isnull().sum().sort_values(ascending=False))
 
 # ### i) Lets's Combine the both dataset for getting the information of the Channels and IHC_Conv, and insights about the dataset, after combining.
 
-# In[154]:
+# In[47]:
 
 
 # let's merge the dataset using Conv_ID
 
-df = pd.merge(df_conversions, df_attributions, how='inner', on='Conv_ID',left_index=False, right_index=False, sort=True)
+df_merged = pd.merge(df_conversions, df_attributions, how='inner', on='Conv_ID',left_index=False, right_index=False, sort=True)
 
 
-# In[155]:
+# In[48]:
 
 
 # checking the shape of the dataset, after merging.
 
-df.shape
+df_merged.shape
 
 
-# In[94]:
+# In[49]:
 
 
 # checking the top 5 rows of the dataset.
 
-df.head()
+df_merged.head()
 
 
-# In[95]:
+# In[50]:
 
 
 # checking the completeness of the dataset.
 
-print(df.isnull().sum().sort_values(ascending=False))
+print(df_merged.isnull().sum().sort_values(ascending=False))
 
 
 # In[ ]:
@@ -277,15 +277,15 @@ print(df.isnull().sum().sort_values(ascending=False))
 
 
 
-# In[97]:
+# In[51]:
 
 
 # Changing the data type of the Conv_Date Attribute
 
-df['Conv_Date'] = pd.to_datetime(df['Conv_Date'])
+df_merged['Conv_Date'] = pd.to_datetime(df_merged['Conv_Date'])
 
 
-# In[159]:
+# In[52]:
 
 
 # changing the data type of Conv_Date attribute in actual conversion dataset.
@@ -307,7 +307,7 @@ df_conversions['Conv_Date'] = pd.to_datetime(df_conversions['Conv_Date'])
 
 
 
-# In[156]:
+# In[16]:
 
 
 # Let's check some stats about our conversions dataframes.
@@ -335,20 +335,20 @@ print("Range of Revenue  \t\t:", df_conversions.Revenue.min(), " to ", df_conver
 
 
 
-# In[105]:
+# In[53]:
 
 
-# Let's check some stats about Complete dataset after mergin.
+# Let's check some stats about merged dataset.
 
 print("Inforation about our Complete dataset \n\n")
-print("Number of Rows   \t\t:", df.shape[0]) #check the total rows in our data.
-print("Number of Columns \t\t:", df.shape[1]) #check the total coloumns in our data.
-print("Date ranges from  \t\t:", df.Conv_Date.min(), " to ", df.Conv_Date.max()) #check range of the dates in the pandas.
-print("#Number of Unique Conv_ID \t:", df.Conv_ID.nunique()) #check the Number of Unique transactions
-print("#Unique Customers \t\t:", df.User_ID.nunique()) #check the unique customers
-print("Range of Revenue  \t\t:", df.Revenue.min(), " to ", df.Revenue.max()) #check range Quantity pada data
-print("Range of IHC Value \t\t:", df.IHC_Conv.min(), " to ", df.IHC_Conv.max()) #check range of IHC values.
-print("Unique Channels in Our Dataset  :", df.Channel.unique().tolist()) # check the unique channels in our dataste.
+print("Number of Rows   \t\t:", df_merged.shape[0]) #check the total rows in our data.
+print("Number of Columns \t\t:", df_merged.shape[1]) #check the total coloumns in our data.
+print("Date ranges from  \t\t:", df_merged.Conv_Date.min(), " to ", df_merged.Conv_Date.max()) #check range of the dates in the pandas.
+print("#Number of Unique Conv_ID \t:", df_merged.Conv_ID.nunique()) #check the Number of Unique transactions
+print("#Unique Customers \t\t:", df_merged.User_ID.nunique()) #check the unique customers
+print("Range of Revenue  \t\t:", df_merged.Revenue.min(), " to ", df_merged.Revenue.max()) #check range Quantity pada data
+print("Range of IHC Value \t\t:", df_merged.IHC_Conv.min(), " to ", df_merged.IHC_Conv.max()) #check range of IHC values.
+print("Unique Channels in Our Dataset  :", df_merged.Channel.unique().tolist()) # check the unique channels in our dataste.
 
 
 # In[ ]:
@@ -365,15 +365,15 @@ print("Unique Channels in Our Dataset  :", df.Channel.unique().tolist()) # check
 
 
 
-# In[106]:
+# In[54]:
 
 
 # Checking the stats of the Numeric columns of our dataset. 
 
-df.describe()
+df_merged.describe()
 
 
-# In[157]:
+# In[19]:
 
 
 # checking the stats of Numeric Values of Convesions Dataset
@@ -419,7 +419,7 @@ df_conversions.describe()
 
 
 
-# In[160]:
+# In[20]:
 
 
 # creating a date time value for March 27, 2018
@@ -438,7 +438,7 @@ rfmTransTable.rename(columns = {'Conv_Date': 'recency',
                          'Revenue': 'monetary'}, inplace=True)
 
 
-# In[161]:
+# In[21]:
 
 
 # sorting the rfmTransTable in descending order
@@ -446,12 +446,12 @@ rfmTransTable.rename(columns = {'Conv_Date': 'recency',
 rfmTransTable = rfmTransTable.sort_values(by=['frequency'], ascending=False)
 
 
-# In[162]:
+# In[22]:
 
 
 # Checking the Top 10 Rows
 
-rfmTransTable.head()
+rfmTransTable.head(10)
 
 
 # In[ ]:
@@ -486,7 +486,7 @@ The easiest way to create a segment is the quartile method. With this method the
 
 
 
-# In[163]:
+# In[23]:
 
 
 # Making quantile from the rfmTransTable
@@ -496,7 +496,7 @@ quantiles = quantiles.to_dict()
 segmented_rfm = rfmTransTable
 
 
-# In[164]:
+# In[24]:
 
 
 # checking the top rows of segmented_rfm
@@ -504,7 +504,7 @@ segmented_rfm = rfmTransTable
 segmented_rfm.head()
 
 
-# In[165]:
+# In[25]:
 
 
 # method for calculating the R Score.
@@ -530,7 +530,7 @@ def FMScore(x,p,d):
         return 4
 
 
-# In[166]:
+# In[26]:
 
 
 # calculating the r_quartile using Rscore method.
@@ -546,7 +546,7 @@ segmented_rfm['m_quartile'] = segmented_rfm['monetary'].apply(FMScore, args=('mo
 segmented_rfm.head()
 
 
-# In[167]:
+# In[29]:
 
 
 # calculating the RFM Segment by combining all the quartiles as a string.
@@ -555,11 +555,11 @@ segmented_rfm['RFMSegment'] = segmented_rfm.r_quartile.map(str) + segmented_rfm.
 # calculating the RFM Segment by combining all the quartiles as a string.
 segmented_rfm['RFMScore'] = segmented_rfm.r_quartile + segmented_rfm.f_quartile + segmented_rfm.m_quartile
 
-# checking the top 5 rows of segmented_rfm
-segmented_rfm.head()
+# checking the top 10 rows of segmented_rfm
+segmented_rfm.head(10)
 
 
-# In[168]:
+# In[28]:
 
 
 # checking the last 5 records of the segmented_rfm
@@ -587,18 +587,20 @@ RFM Score: 12 is the best score because it has a low recency (still active), fre
 
 
 
-# In[169]:
+# In[30]:
 
 
 # checking the top RFMScore, by sorting the dataframe according to monetary in descending order.
 
-segmented_rfm[segmented_rfm['RFMScore'] == 12].sort_values('monetary', ascending=False).head()
+segmented_rfm[segmented_rfm['RFMScore'] == 12].sort_values('monetary', ascending=False).head(10)
 
 
-# In[ ]:
+# In[45]:
 
 
+# ploting Histogram of the RFM Scores.
 
+segmented_rfm.RFMScore.hist()
 
 
 # ### v)  checking the conversion of the top User, according to the RFM and Quartile Method. 
@@ -609,7 +611,7 @@ segmented_rfm[segmented_rfm['RFMScore'] == 12].sort_values('monetary', ascending
 
 
 
-# In[134]:
+# In[31]:
 
 
 # checking the conversion of the top User.
@@ -634,8 +636,22 @@ top_customer.head(10)
 
 
 
+Cohort Analysis are used for calculating the Retention rates. Retention rates are very important for the success of any business, but somehow Retention rates are often ignored.
 
-# In[172]:
+The Reason why Retention Rates are very important. Because the cost of customer acquisition is very expensive we need to do everything to convince the client to return after their first purchase.
+
+If your retention rate is low you will spend a budget for the acquisition channel so that more customers will arrive.
+
+From Cohort Analysis we can see the retention rate or what percentage of customers return in the following months after the first purchase
+
+
+# In[ ]:
+
+
+
+
+
+# In[32]:
 
 
 # checking the head of conversions dataset.
@@ -657,7 +673,7 @@ df_conversions.head()
 
 
 
-# In[173]:
+# In[33]:
 
 
 # declaring a method to get us the first date of each month from the dataset.
@@ -673,7 +689,7 @@ grouping = df_conversions.groupby('User_ID')['Conv_Month']
 df_conversions['CohortMonth'] = grouping.transform('min')
 
 
-# In[174]:
+# In[34]:
 
 
 # checking the first 5 rows of the conversions dataset to have a look.
@@ -681,7 +697,7 @@ df_conversions['CohortMonth'] = grouping.transform('min')
 df_conversions.head()
 
 
-# In[175]:
+# In[35]:
 
 
 ## function for extracting the year, month and day from the date value. 
@@ -693,7 +709,7 @@ def get_date_int(df, column):
     return year, month, day
 
 
-# In[176]:
+# In[36]:
 
 
 # getting the year and month of Conv_Month Column from the get_date_int method.
@@ -703,7 +719,7 @@ invoice_year, invoice_month, _ = get_date_int(df_conversions, 'Conv_Month')
 cohort_year, cohort_month, _ = get_date_int(df_conversions, 'CohortMonth')
 
 
-# In[69]:
+# In[37]:
 
 
 # calculating the years difference among the invoice and cohort year.
@@ -713,7 +729,7 @@ years_diff = invoice_year - cohort_year
 months_diff = invoice_month - cohort_month
 
 
-# In[177]:
+# In[38]:
 
 
 # creating the cohortIndex.
@@ -721,7 +737,7 @@ months_diff = invoice_month - cohort_month
 df_conversions['CohortIndex'] = years_diff * 12 + months_diff + 1
 
 
-# In[178]:
+# In[39]:
 
 
 # checking the top 5 rows of conversion dataframe.
@@ -729,7 +745,7 @@ df_conversions['CohortIndex'] = years_diff * 12 + months_diff + 1
 df_conversions.head()
 
 
-# In[179]:
+# In[40]:
 
 
 # checking the null values in our conversions dataset.
@@ -743,7 +759,7 @@ df_conversions.isna().sum()
 
 
 
-# In[180]:
+# In[41]:
 
 
 ## grouping the dataset according to the CohortMonth and CohortIndex
@@ -759,7 +775,7 @@ cohort_data = cohort_data.reset_index()
 cohort_counts = cohort_data.pivot(index='CohortMonth', columns='CohortIndex', values='User_ID')
 
 
-# In[181]:
+# In[42]:
 
 
 # checking the cohort_counts dataset.
@@ -797,7 +813,7 @@ CohortMonth 2017-03 (Cohort March 2017) has 4448 Unique Users who made conversio
 
 
 
-# In[182]:
+# In[43]:
 
 
 # Assigning first column as cohort size.
@@ -822,7 +838,7 @@ retention.round(2) * 100
 
 
 
-# In[185]:
+# In[44]:
 
 
 # Ploting the Cohort Analysis
@@ -851,12 +867,6 @@ plt.show()
 
 
 
-
-Retention rates are often ignored, but they are actually very important. Because the cost of customer acquisition is very expensive we need to do everything to convince the client to return after their first purchase.
-
-If your retention rate is low you will spend a budget for the acquisition channel so that more customers will arrive.
-
-From Cohort Analysis we can see the retention rate or what percentage of customers return in the following months after the first purchase
 
 
 # In[ ]:
